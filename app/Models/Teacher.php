@@ -55,4 +55,15 @@ class Teacher extends Authenticatable implements JWTSubject
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class)
+            ->withTimestamps();;
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }

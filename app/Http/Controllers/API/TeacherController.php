@@ -12,6 +12,13 @@ use App\Http\Requests\RegisterRequest;
 
 class TeacherController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:teacher', ['only'=> ['myCourses']]);
+
+        // $this->middleware('auth:client', ['only'=> ['index', 'view']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -120,5 +127,14 @@ class TeacherController extends Controller
             'token_type' => 'bearer',
             'teacher' => auth('teacher')->user()->name
         ]);
+    }
+
+    public function myCourses()
+    {
+        $teacher = auth('teacher')->user();
+
+        $courses = $teacher->courses;
+
+        return $courses;
     }
 }
