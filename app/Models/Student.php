@@ -65,4 +65,10 @@ class Student extends Authenticatable implements JWTSubject
             ->withPivot(['is_verified'])
             ->withTimestamps();
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class)
+            ->withTimestamps();
+    }
 }

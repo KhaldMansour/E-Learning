@@ -14,6 +14,8 @@ class CourseController extends Controller
     {
         $this->middleware('auth:teacher', ['only'=> ['store', 'update']]);
 
+        $this->middleware('auth:student', ['only'=> ['enroll']]);
+
         // $this->middleware('auth:client', ['only'=> ['index', 'view']]);
     }
 
@@ -130,5 +132,19 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         //
+    }
+
+    public function enroll($course_id)
+    {
+
+        $course = Course::findOrFail($course_id);
+
+        $student = auth('student')->user();
+        
+        $student->courses()->syncWithoutDetaching($course);
+
+        return response()->json([
+            'message' => 'Course Enrolled Successfully.'
+        ]);   
     }
 }
